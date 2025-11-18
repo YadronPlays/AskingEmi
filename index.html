@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Mi bebecita</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    /* ------------------ PIN SCREEN ------------------ */
+    #pinScreen {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      z-index: 2000;
+    }
+
+    #pinInput {
+      font-size: 2rem;
+      padding: 10px 20px;
+      width: 180px;
+      text-align: center;
+      border-radius: 10px;
+      border: 3px solid white;
+      background: black;
+      color: white;
+      margin-top: 20px;
+    }
+
+    #pinButton {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      background: white;
+      color: black;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .shake {
+      animation: shakeAnim 0.3s ease;
+    }
+
+    @keyframes shakeAnim {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* ------------------ SLIDESHOW ------------------ */
+    .slideshow {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      animation: slideShow 50s infinite;
+      background-size: cover;
+      background-position: center;
+    }
+    @keyframes slideShow {
+      0%   { background-image: url('./images/IMG_0587.png'); }
+      25%  { background-image: url('./images/IMG_0477.png'); }
+      50%  { background-image: url('./images/IMG_0411.png'); }
+      75%  { background-image: url('./images/IMG_0351.png'); }
+      100% { background-image: url('./images/IMG_0580.png'); }
+    }
+
+
+
+
+
+    h1 {
+      margin-top: 20%;
+      font-size: 3rem;
+      text-shadow: 0 0 10px black;
+    }
+
+    button {
+      background-color: rgba(255,255,255,0.2);
+      border: 2px solid white;
+      color: white;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgba(255,255,255,0.4);
+    }
+
+    #content, #question {
+      display: none;
+      margin-top: 40px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    video, img {
+      width: 300px;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    }
+
+    /* ---------------- FLOWER EXPLOSION ---------------- */
+    .flower {
+      position: fixed;
+      font-size: 2rem;
+      animation: floatUp 8s ease-out forwards;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.7));
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.8); }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(2); }
+    }
+
+    /* ---------------- YAY SCREEN ---------------- */
+    #yayScreen {
+      position: fixed;
+      inset: 0;
+      background: #ff69b4;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      color: white;
+      animation: fadeIn 1s ease;
+      z-index: 1500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN LOCK PAGE -->
+  <div id="pinScreen">
+    <h1>Enter PIN</h1>
+    <input id="pinInput" maxlength="6" placeholder="••••••">
+    <button id="pinButton">Unlock</button>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div class="slideshow"></div>
+
+  <!-- MAIN CONTENT -->
+  <h1>mi amooor</h1>
+  <button id="menuButton">Toca me😩😩</button>
+
+  <div id="content">
+    <h2>nos dos idiotas</h2>
+    <video src="videos/a35cd89c-b199-4489-900a-d9d8c79506da.MP4" controls></video>
+    <video src="videos/IMG_0653.MP4" controls></video>
+    <video src="videos/IMG_0316.MP4" controls></video>
+    <video src="videos/IMG_0706.MP4" controls></video>
+    <br>
+    <button id="nextButton">Continua</button>
+  </div>
+
+  <div id="question">
+    <h2>Puedo ser tu novio porfavor?</h2>
+    <button id="yesButton">Si</button>
+    <button id="noButton">No</button>
+  </div>
+
+  <!-- YES PAGE -->
+  <div id="yesPage" style="display:none; margin-top:20%;">
+    <h1>Te amo mi amor ❤️</h1>
+  </div>
+
+  <!-- NO PAGE -->
+  <div id="noPage" style="display:none; margin-top:20%;">
+    <h2>Puedo ser tu novio porfavor?</h2>
+    <button id="backToYesButton">Si</button>
+  </div>
+
+  <script>
+  /* -------- PIN SYSTEM -------- */
+  const pinScreen = document.getElementById('pinScreen');
+  const pinInput = document.getElementById('pinInput');
+  const pinButton = document.getElementById('pinButton');
+
+  const correctPIN = "1202";
+
+  pinButton.addEventListener('click', () => {
+    if (pinInput.value === correctPIN) {
+      pinScreen.style.display = 'none';
+    } else {
+      pinInput.classList.add('shake');
+      setTimeout(() => pinInput.classList.remove('shake'), 300);
+    }
+  });
+
+  /* -------- SITE LOGIC -------- */
+  const menuButton = document.getElementById('menuButton');
+  const content = document.getElementById('content');
+  const question = document.getElementById('question');
+  const nextButton = document.getElementById('nextButton');
+  const yesButton = document.getElementById('yesButton');
+  const noButton = document.getElementById('noButton');
+
+  const yesPage = document.getElementById('yesPage');
+  const noPage = document.getElementById('noPage');
+  const backToYesButton = document.getElementById('backToYesButton');
+
+  menuButton.addEventListener('click', () => {
+    menuButton.style.display = 'none';
+    content.style.display = 'block';
+  });
+
+  nextButton.addEventListener('click', () => {
+    content.style.display = 'none';
+    question.style.display = 'block';
+  });
+
+  /* -------- YES BUTTON -------- */
+  yesButton.addEventListener('click', () => {
+    createFlowerExplosion();
+    question.style.display = 'none';
+
+    setTimeout(() => {
+      yesPage.style.display = 'block';
+    }, 3000);
+  });
+
+  /* -------- NO BUTTON -------- */
+  noButton.addEventListener('click', () => {
+    question.style.display = 'none';
+    noPage.style.display = 'block';
+  });
+
+  /* -------- NO PAGE BUTTON (GO TO YES PAGE WITH FLOWERS) -------- */
+  backToYesButton.addEventListener('click', () => {
+    createFlowerExplosion();
+    noPage.style.display = 'none';
+
+    setTimeout(() => {
+      yesPage.style.display = 'block';
+    }, 3000);
+  });
+
+  /* -------- FLOWER EXPLOSION -------- */
+  function createFlowerExplosion() {
+    const flowers = ['🌹','🌺','🌸','🌷','💐','🌻','🌼','🌿','🍃'];
+    for (let i = 0; i < 250; i++) {
+      const f = document.createElement('div');
+      f.classList.add('flower');
+      f.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+      document.body.appendChild(f);
+
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      f.style.left = `${x}px`;
+      f.style.top = `${y}px`;
+
+      const dx = (Math.random() - 0.5) * 1200 + "px";
+      const dy = (Math.random() - 1.3) * 1200 + "px";
+      f.style.setProperty('--x', dx);
+      f.style.setProperty('--y', dy);
+
+      f.style.fontSize = (Math.random() * 2 + 1.5) + "rem";
+      f.style.animationDelay = Math.random() * 1.4 + "s";
+
+      setTimeout(() => f.remove(), 8000);
+    }
+  }
+  </script>
+
+</body>
+
+</html>
