@@ -63,6 +63,7 @@
     }
 
     /* ------------------ SLIDESHOW ------------------ */
+    /* ------------------ SLIDESHOW ------------------ */
     .slideshow {
       position: fixed;
       width: 100%;
@@ -70,17 +71,12 @@
       top: 0;
       left: 0;
       z-index: -1;
-      animation: slideShow 50s infinite;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
     }
-    @keyframes slideShow {
-      0%   { background-image: url('./images/IMG_0587.png'); }
-      25%  { background-image: url('./images/IMG_0477.png'); }
-      50%  { background-image: url('./images/IMG_0411.png'); }
-      75%  { background-image: url('./images/IMG_0351.png'); }
-      100% { background-image: url('./images/IMG_0580.png'); }
-    }
+
 
 
 
@@ -289,6 +285,48 @@
       setTimeout(() => f.remove(), 8000);
     }
   }
+
+  const images = [
+  './images/IMG_0587.png',
+  './images/IMG_0477.png',
+  './images/IMG_0411.png',
+  './images/IMG_0351.png',
+  './images/IMG_0580.png'
+  ];
+
+  const slideshow = document.querySelector('.slideshow');
+
+  // Preload images
+  images.forEach(src => { const img = new Image(); img.src = src; });
+
+  let current = 0;
+  slideshow.style.backgroundImage = `url(${images[current]})`;
+
+  setInterval(() => {
+    current = (current + 1) % images.length;
+
+    const fadeDiv = document.createElement('div');
+    fadeDiv.style.backgroundImage = `url(${images[current]})`;
+    fadeDiv.style.position = 'absolute';
+    fadeDiv.style.top = 0;
+    fadeDiv.style.left = 0;
+    fadeDiv.style.width = '100%';
+    fadeDiv.style.height = '100%';
+    fadeDiv.style.backgroundSize = 'cover';
+    fadeDiv.style.backgroundPosition = 'center';
+    fadeDiv.style.opacity = 0;
+    fadeDiv.style.transition = 'opacity 1s ease-in-out';
+    slideshow.appendChild(fadeDiv);
+
+    requestAnimationFrame(() => { fadeDiv.style.opacity = 1; });
+
+    setTimeout(() => {
+      slideshow.style.backgroundImage = `url(${images[current]})`;
+      fadeDiv.remove();
+    }, 1000);
+
+  }, 10000); // change every 10s
+
   </script>
 
 </body>
